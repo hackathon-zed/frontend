@@ -34,22 +34,7 @@ import {
 } from "@/components/ui/table";
 import Container from "@/components/ui/container";
 
-const data: User[] = [
-  {
-    id: "mnop",
-    SN: 1,
-    UserName: "nabin",
-    email: "ken99@yahoo.com",
-    role: "admin",
-  },
-  {
-    id: "oprs",
-    SN: 2,
-    UserName: "Roshan",
-    email: "Abe45@gmail.com",
-    role: "seller",
-  },
-];
+const [data, setData] = React.useState<User[]>([]);
 
 export type User = {
   SN: number;
@@ -99,49 +84,52 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const User = row.original;
 
-      function handleDeleteUser(userId: string) {
+      // Function to delete a user
+      async function deleteUser(userId: string) {
         if (confirm("Are you sure you want to delete this user?")) {
-          fetch(`/api/users/${userId}`, {
-            method: "DELETE",
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.success) {
-                alert("User deleted successfully!");
-                // Optionally refresh table data here
-              } else {
-                alert(`Failed to delete user: ${data.message}`);
+          try {
+            const response = await fetch(
+              `http://localhost:3000/api/v1/customer/${userId}`,
+              {
+                method: "DELETE",
               }
-            })
-            .catch((error) => {
-              console.error("Error deleting user:", error);
-              alert("An error occurred while deleting the user.");
-            });
+            );
+            const data = await response.json();
+            if (data.success) {
+              alert("User deleted successfully!");
+              // Optionally refresh the data table
+            } else {
+              alert(`Failed to delete user: ${data.message}`);
+            }
+          } catch (error) {
+            console.error("Error deleting user:", error);
+            alert("An error occurred while deleting the user.");
+          }
         }
       }
 
-      function handleSuspendUser(userId: string) {
+      // Function to suspend a user
+      async function suspendUser(userId: string) {
         if (confirm("Are you sure you want to suspend this user?")) {
-          fetch(`/api/users/${userId}/suspend`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ suspended: true }),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.success) {
-                alert("User suspended successfully!");
-                // Optionally refresh table data here
-              } else {
-                alert(`Failed to suspend user: ${data.message}`);
-              }
-            })
-            .catch((error) => {
-              console.error("Error suspending user:", error);
-              alert("An error occurred while suspending the user.");
+          try {
+            const response = await fetch(`/api/users/${userId}/suspend`, {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ suspended: true }),
             });
+            const data = await response.json();
+            if (data.success) {
+              alert("User suspended successfully!");
+              // Optionally refresh the data table
+            } else {
+              alert(`Failed to suspend user: ${data.message}`);
+            }
+          } catch (error) {
+            console.error("Error suspending user:", error);
+            alert("An error occurred while suspending the user.");
+          }
         }
       }
 
@@ -161,14 +149,14 @@ export const columns: ColumnDef<User>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
-                handleDeleteUser("roshan");
+                deleteUser("roshan");
               }}
             >
               Delete User
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                handleSuspendUser("pawan");
+                suspendUser("pawan");
               }}
             >
               Suspend User

@@ -23,7 +23,7 @@ export default function Faqs() {
   }, []);
 
   const fetchFAQs = async () => {
-    const response = await fetch("/api/faq");
+    const response = await fetch("http://localhost:3000/api/v1/faq");
     const data = await response.json();
     setFaqs(data);
   };
@@ -31,13 +31,13 @@ export default function Faqs() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editingId) {
-      await fetch("/api/faq", {
+      await fetch(`http://localhost:3000/api/v1/faq/${editingId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: editingId, question, answer }),
       });
     } else {
-      await fetch("/api/faq", {
+      await fetch("http://localhost:3000/api/v1/faq/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question, answer }),
@@ -56,7 +56,7 @@ export default function Faqs() {
   };
 
   const handleDelete = async (id: number) => {
-    await fetch("/api/faq", {
+    await fetch("http://localhost:3000/api/v1/faq", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
