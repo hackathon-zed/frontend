@@ -123,7 +123,7 @@ const FormBuilder = <T extends FieldValues>({
                         placeholder={placeholder}
                         type={type}
                         {...field}
-                        value={field.value as string | string[]}
+                        value={field.value as string | string[]  || ""}
                         className={cn({
                           "border-red-400": fieldState.invalid,
                         })}
@@ -154,7 +154,7 @@ const FormBuilder = <T extends FieldValues>({
                         value={
                           typeof field.value === "boolean"
                             ? ""
-                            : (field.value as string | string[])
+                            : (field.value as string | string[]||"")
                         }
                       />
                     </FormControl>
@@ -216,7 +216,7 @@ const FormBuilder = <T extends FieldValues>({
                         value={
                           typeof field.value === "boolean"
                             ? ""
-                            : (field.value as string)
+                            : (field.value as string)||""
                         }
                         className={cn({
                           "border-red-400": fieldState.invalid,
