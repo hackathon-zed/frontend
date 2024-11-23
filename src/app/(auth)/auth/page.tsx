@@ -101,6 +101,7 @@ const Signup = () => {
       const response = await fetch(`http://localhost:3000/api/v1/auth/google`, {
         method: "GET",
       });
+      console.log("Response:", response);
 
       if (!response.ok) {
         console.log(response);
@@ -113,6 +114,10 @@ const Signup = () => {
     } catch (error) {
       console.error("Error during login:", error);
     }
+  };
+
+  const handleGoogleSignIn = () => {
+    window.location.href = "http://localhost:3000/api/v1/auth/google";
   };
 
   const onRegisterSubmit = (data: SignupFormSchemaType) => {
@@ -228,11 +233,12 @@ const Signup = () => {
                     </span>
                   </div>
                 </div>
+                {/* Google sign */}
                 <div>
                   <Button
                     className="w-full"
                     variant="outline"
-                    onClick={() => handleSigninWithProvider()}
+                    onClick={handleGoogleSignIn}
                   >
                     <Icons.google className="mr-2 h-4 w-4" />
                     Google
