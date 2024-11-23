@@ -1,5 +1,11 @@
+import Onboarding from "@/components/shared/Forms/Onboarding";
+
 const OnboardingPage = () => {
-  return <div>OnboardingPage</div>;
+  return (
+    <div>
+      <Onboarding />
+    </div>
+  );
 };
 
 export default OnboardingPage;
