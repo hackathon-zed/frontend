@@ -3,9 +3,14 @@ import Container from "@/components/ui/container";
 
 const HelpPage = () => {
   return (
-    <Container className="border-1 border-border">
+    <Container className="border-1 border-border my-4">
+      <h2 className="h2 text-center">Our chatbot is here to help you</h2>
+
       <ChatBot />
-      Need for professional help? Contact us at
+      <p className="p text-center">
+        Need for professional help? Contact us at{" "}
+        <em className="font-semibold">zed.ai@gmail.com</em>
+      </p>
     </Container>
   );
 };

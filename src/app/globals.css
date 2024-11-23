@@ -1,3 +1,7 @@
+@import "katex/dist/katex.min.css";
+
+@import "./markdown.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
