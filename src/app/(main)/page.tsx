@@ -1,3 +1,4 @@
+import AddProduct from "@/components/product-add/new_product";
 import Arts from "@/components/shared/Arts";
 import Header from "@/components/shared/Header";
 import Hero from "@/components/shared/Hero";
@@ -8,6 +9,7 @@ export default function Home() {
       <Hero backgroundImage="/hero.png" />
       <Header />
       <Arts />
+      <AddProduct />
     </div>
   );
 }
