@@ -1,7 +1,13 @@
 import { PropsWithChildren } from "react";
+import { Toaster } from "sonner";
 
 const AuthLayout = ({ children }: PropsWithChildren) => {
-  return <>{children}</>;
+  return (
+    <>
+      <Toaster />
+      {children}
+    </>
+  );
 };
 
 export default AuthLayout;

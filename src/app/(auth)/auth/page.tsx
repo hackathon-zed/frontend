@@ -110,7 +110,7 @@ const Signup = () => {
 
       const result = await response.json();
       localStorage.setItem("authToken", result.token);
-      router.push("/dashboard");
+      router.push("/onboarding");
     } catch (error) {
       console.error("Error during login:", error);
     }
