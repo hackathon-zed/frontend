@@ -1,3 +1,13 @@
+import Arts from "@/components/shared/Arts";
+import Header from "@/components/shared/Header";
+import Hero from "@/components/shared/Hero";
+
 export default function Home() {
-  return <div></div>;
+  return (
+    <div className="space-y-12">
+      <Hero backgroundImage="/hero.png" />
+      <Header />
+      <Arts />
+    </div>
+  );
 }
