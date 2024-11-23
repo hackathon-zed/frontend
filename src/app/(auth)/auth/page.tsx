@@ -1,12 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
- import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
-
-
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,12 +19,10 @@ import FormBuilder from "@/components/shared/Forms/formBuilder";
 import { Icons } from "@/components/shared/icons";
 
 const Signup = () => {
- 
-  
   const searchParams = useSearchParams();
   const type = searchParams.get("type");
   const router = useRouter();
-  
+
   const LOGIN_FORM_DATA = [
     {
       label: "Email",
@@ -101,27 +96,36 @@ const Signup = () => {
     resolver: zodResolver(signupFormSchema),
   });
 
-  const handleSigninWithProvider = async (provider: string) => {
+  const handleSigninWithProvider = async () => {
     try {
-      await signIn(provider, { redirect: true, callbackUrl: "/" });
+      const response = await fetch(`http://localhost:3000/api/v1/auth/google`, {
+        method: "GET",
+      });
+
+      if (!response.ok) {
+        console.log(response);
+        throw new Error("Login failed");
+      }
+
+      const result = await response.json();
+      localStorage.setItem("authToken", result.token);
+      router.push("/dashboard");
     } catch (error) {
-      console.error("Error during sign-in:", error);
+      console.error("Error during login:", error);
     }
   };
 
   const onRegisterSubmit = (data: SignupFormSchemaType) => {
     console.log(data);
-    //signUp(data);
   };
   const onLoginSubmit = (data: LoginFormSchemaType) => {
     console.log(data);
-   //login(data);
+    //login(data);
   };
 
   return (
     <Form {...form}>
       <div className="mx-auto max-w-lg space-y-8 py-10">
-        
         <Card className="overflow-hidden">
           <Tabs defaultValue={type ?? "register"}>
             <TabsList className="grid w-full grid-cols-2 rounded-none border-b">
@@ -143,7 +147,7 @@ const Signup = () => {
             <TabsContent value="login">
               <CardHeader className="flex items-center space-y-1">
                 <Image
-                  src="/destinationAustraliaLogo.png"
+                  src="/logo.png"
                   alt="MITHILA LEGACY"
                   width={1000}
                   height={1000}
@@ -177,10 +181,10 @@ const Signup = () => {
                   </div>
                 </div>
                 <div>
-                  
-                  <Button className="w-full"
+                  <Button
+                    className="w-full"
                     variant="outline"
-                    onClick={() => handleSigninWithProvider("google")}
+                    onClick={() => handleSigninWithProvider()}
                   >
                     <Icons.google className="mr-2 h-4 w-4" />
                     Google
@@ -191,7 +195,7 @@ const Signup = () => {
             <TabsContent value="register">
               <CardHeader className="flex items-center space-y-1">
                 <Image
-                  src="/destinationAustraliaLogo.png"
+                  src="/logo.png"
                   alt="MITHILA LEGACY"
                   width={1000}
                   height={1000}
@@ -224,11 +228,11 @@ const Signup = () => {
                     </span>
                   </div>
                 </div>
-                <div >
-                 
-                  <Button className='w-full'
+                <div>
+                  <Button
+                    className="w-full"
                     variant="outline"
-                    onClick={() => handleSigninWithProvider("google")}
+                    onClick={() => handleSigninWithProvider()}
                   >
                     <Icons.google className="mr-2 h-4 w-4" />
                     Google
@@ -239,7 +243,6 @@ const Signup = () => {
           </Tabs>
         </Card>
       </div>
-      
     </Form>
   );
 };
