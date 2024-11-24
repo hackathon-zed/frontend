@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.12.10",
     "@hookform/resolvers": "^3.9.1",
     "@nanostores/react": "github:ai/react",
     "@radix-ui/react-avatar": "^1.1.1",
@@ -29,9 +30,12 @@
     "@radix-ui/react-tooltip": "^1.1.4",
     "@tanstack/react-table": "^8.20.5",
     "ai": "^4.0.3",
+    "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "extendable-media-recorder": "^9.2.17",
+    "extendable-media-recorder-wav-encoder": "^7.0.121",
     "immer": "^10.1.1",
     "input-otp": "^1.4.1",
     "lucide-react": "^0.460.0",
@@ -54,6 +58,7 @@
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "usehooks-ts": "^3.1.0",
+    "webm-to-wav-converter": "^1.1.0",
     "zod": "^3.23.8",
     "zustand": "^5.0.1"
   },

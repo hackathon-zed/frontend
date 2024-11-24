@@ -1,187 +1,123 @@
 "use client";
 
-import React, { useState, useRef, useCallback, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import React, { useState } from 'react';
+import { Upload } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import AudioRecorder from './recording.translator';
+export default function Page() {
 
-export default function TranslateAudioPage() {
-  const [isRecording, setIsRecording] = useState(false);
-  const [recordingTime, setRecordingTime] = useState(0);
-  const [audioBuffer, setAudioBuffer] = useState<Blob | null>(null);
-  const [translatedText, setTranslatedText] = useState<string | null>(null);
-  const [isTranslating, setIsTranslating] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [file, setSelectedFile] = useState(null as File | null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [translatedText, setTranslatedText] = useState('');
+  const [error, setError] = useState('');
 
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const startRecording = useCallback(async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorderRef.current = new MediaRecorder(stream);
-      audioChunksRef.current = [];
-
-      mediaRecorderRef.current.ondataavailable = (event) => {
-        audioChunksRef.current.push(event.data);
-      };
-
-      mediaRecorderRef.current.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, {
-          type: "audio/wav",
-        });
-        setAudioBuffer(audioBlob);
-      };
-
-      mediaRecorderRef.current.start();
-      setIsRecording(true);
-      setRecordingTime(0);
-
-      timerRef.current = setInterval(() => {
-        setRecordingTime((prevTime) => prevTime + 1);
-      }, 1000);
-    } catch (err) {
-      console.error("Error accessing microphone:", err);
-      setError("Could not access the microphone. Please check your settings.");
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]; // Safely access the first file
+    if (file) {
+      setSelectedFile(file); // Update state with the selected file
+      console.log("File selected:", file.name);
+    } else {
+      console.error("No file selected.");
+      setSelectedFile(null); // Reset state to null
     }
-  }, []);
+  };
 
-  const stopRecording = useCallback(() => {
-    if (mediaRecorderRef.current && isRecording) {
-      mediaRecorderRef.current.stop();
-      setIsRecording(false);
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
+  console.log("file", file);
+
+  const handleTranslate = async () => {
+
+    console.log("file in handleTranslate", file);
+    if (!file) {
+      setError('Please select an audio file first');
+      return;
     }
-  }, [isRecording]);
-
-  const handleFileUpload = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files?.[0];
-      if (file) {
-        setError(null);
-      }
-    },
-    []
-  );
-
-  const translateAudio = useCallback(async () => {
-    if (!audioBuffer) return;
-
-    setIsTranslating(true);
-    setError(null);
 
     try {
+      setIsLoading(true);
+      setError('');
+
       const formData = new FormData();
-      formData.append("audio", audioBuffer, "audio.wav");
+      formData.append('audio', file);
 
-      const response = await fetch(
-        "http://localhost:3000/api/v1/azure/speech-translate", // Ensure the URL matches your backend
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch('http://localhost:3000/api/v1/azure/speech-translate', {
+        method: 'POST',
+        body: formData,
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to process the audio file.");
+        throw new Error(`Translation failed: ${response.statusText}`);
       }
 
-      const data = await response.json(); // Assuming the backend returns JSON
-      if (data.text) {
-        setTranslatedText(data.text); // Assuming the text result is returned in a `text` field
-      } else {
-        throw new Error("No text result in the response.");
-      }
-    } catch (err) {
-      console.error("Error translating audio:", err);
-      setError("An error occurred during audio processing. Please try again.");
+      const data = await response.json();
+      setTranslatedText(data.translatedText);
+    } catch (err: any) {
+      setError(err.message || 'An error occurred during translation');
     } finally {
-      setIsTranslating(false);
+      setIsLoading(false);
     }
-  }, [audioBuffer]);
+  };
 
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, []);
 
   return (
-    <div className="space-y-4 p-4 max-w-md mx-auto">
-      <h1 className="text-xl font-bold text-center">Audio to Text Converter</h1>
-
-      {/* Recording Controls */}
-      <div className="space-y-2">
-        <Button onClick={isRecording ? stopRecording : startRecording}>
-          {isRecording ? "Stop Recording" : "Start Recording"}
-        </Button>
-        {isRecording && (
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle>Audio to Hindi Translation</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="flex flex-col items-center gap-4">
           <div>
-            <Progress value={(recordingTime / 60) * 100} className="w-full" />
-            <p className="text-sm text-gray-600">
-              Recording Time: {recordingTime}s
-            </p>
+            <AudioRecorder />
           </div>
-        )}
-      </div>
-
-      {/* Original Audio */}
-      {audioBuffer && (
-        <div className="space-y-2">
-          <h3 className="font-semibold">Original Audio</h3>
-          <audio
-            src={URL.createObjectURL(audioBuffer)}
-            controls
-            className="w-full"
-          />
-        </div>
-      )}
-
-      {/* File Upload */}
-      <div className="space-y-2">
-        <Label htmlFor="audio-upload">Upload Audio File</Label>
-        <Input
-          id="audio-upload"
-          type="file"
-          accept="audio/*"
-          onChange={handleFileUpload}
-        />
-      </div>
-
-      {/* Translate Button */}
-      {audioBuffer && (
-        <div className="space-y-2">
-          <Button
-            onClick={translateAudio}
-            disabled={isTranslating || !audioBuffer}
+          <label
+            htmlFor="audio-upload"
+            className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-50"
           >
-            {isTranslating ? "Processing..." : "Convert to Text"}
+            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+              <Upload className="w-8 h-8 mb-2 text-gray-500" />
+              <p className="mb-2 text-sm text-gray-500">
+                <span className="font-semibold">Click to upload</span> or drag and drop
+              </p>
+              <p className="text-xs text-gray-500">WAV files only</p>
+            </div>
+            <input
+              id="audio-upload"
+              type="file"
+              accept=".wav"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </label>
+
+          {file && (
+            <p className="text-sm text-gray-500">
+              Selected file: {file.name}
+            </p>
+          )}
+
+          <Button
+            onClick={handleTranslate}
+            disabled={!file || isLoading}
+            className="w-full max-w-xs"
+          >
+            {isLoading ? 'Translating...' : 'Translate Audio'}
           </Button>
-        </div>
-      )}
 
-      {/* Translated Text */}
-      {translatedText && (
-        <div className="space-y-2">
-          <h3 className="font-semibold">Converted Text</h3>
-          <div className="p-2 border border-gray-300 rounded-md bg-gray-50">
-            <p className="text-gray-800">{translatedText}</p>
-          </div>
-        </div>
-      )}
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
 
-      {/* Error Message */}
-      {error && (
-        <div className="mt-4 p-2 bg-red-100 text-red-700 border border-red-300 rounded-lg">
-          <p>{error}</p>
+          {translatedText && (
+            <div className="w-full p-4 mt-4 border rounded-lg">
+              <h3 className="mb-2 font-semibold">Translation Result:</h3>
+              <p className="text-gray-700">{translatedText}</p>
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </CardContent>
+    </Card>
   );
-}
+};
