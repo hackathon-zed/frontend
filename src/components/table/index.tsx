@@ -34,7 +34,22 @@ import {
 } from "@/components/ui/table";
 import Container from "@/components/ui/container";
 
-const [data, setData] = React.useState<User[]>([]);
+const data: User[] = [
+  {
+    id: "mnop",
+    SN: 1,
+    UserName: "nabin",
+    email: "ken99@yahoo.com",
+    role: "admin",
+  },
+  {
+    id: "oprs",
+    SN: 2,
+    UserName: "Roshan",
+    email: "Abe45@gmail.com",
+    role: "seller",
+  },
+];
 
 export type User = {
   SN: number;
@@ -89,7 +104,7 @@ export const columns: ColumnDef<User>[] = [
         if (confirm("Are you sure you want to delete this user?")) {
           try {
             const response = await fetch(
-              `http://localhost:3000/api/v1/customer/${userId}`,
+              `http://localhost:3000/api/v1/${userId}`,
               {
                 method: "DELETE",
               }
