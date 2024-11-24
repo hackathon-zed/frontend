@@ -184,37 +184,31 @@ export default function Arts() {
       <div className="flex gap-4 flex-wrap pb-4 mb-8 justify-center items-center mx-auto">
         {categories.map((category) => (
           <Button
-<<<<<<< HEAD
             key={category.name}
             variant={
               category.name === selectedCategory ? "default" : "secondary"
             }
             className="whitespace-nowrap cursor-pointer"
             onClick={() => setSelectedCategory(category.name)}
-=======
+
             key={category}
             variant={category === selectedCategory ? "default" : "secondary"}
             className="whitespace-nowrap"
             onClick={() => setSelectedCategory(category)}
->>>>>>> e63bf5fc7ca7a94bccbb6bc7f6c17de9accc30e5
           >
             {category}
           </Button>
         ))}
       </div>
-
-<<<<<<< HEAD
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProducts.map((product) => (
           <div
             key={product.id}
             className="border rounded-lg p-4 min-w-[300px] sm:w-full relative mx-auto transition-transform transform hover:scale-105"
-=======
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {products.map((product: IProduct) => (
           <div
             className="border rounded-lg p-4 min-w-[300px] sm:w-full relative mx-auto"
->>>>>>> e63bf5fc7ca7a94bccbb6bc7f6c17de9accc30e5
           >
             {product.isOnSale && product.salePrice && (
               <Badge
@@ -225,113 +219,7 @@ export default function Arts() {
               </Badge>
             )}
             <div className="aspect-square mb-4 relative">
-<<<<<<< HEAD
-              <Link href={`/${product.slug}`}>
-                <Image
-                  fill
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover rounded-md"
-                />
-              </Link>
-            </div>
-            <h3 className="font-semibold mb-2 text-lg">{product.name}</h3>
-            <div className="flex mb-2">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-4 h-4 ${
-                    i < product.rating
-                      ? "text-yellow-400 fill-yellow-400"
-                      : "text-gray-300"
-                  }`}
-                />
-              ))}
-            </div>
-=======
-              <Image
-                src={product.images[0].url}
-                alt={product.name}
-                className="w-full h-full object-cover rounded-md"
-                width={400}
-                height={400}
-              />
-            </div>
-            <h3 className="font-semibold mb-2">{product.name}</h3>
 
->>>>>>> e63bf5fc7ca7a94bccbb6bc7f6c17de9accc30e5
-            <div className="flex justify-between items-center">
-              <div>
-                {product.isOnSale && product.salePrice ? (
-                  <>
-                    <span className="text-sm text-gray-500 line-through mr-2">
-                      ${product.price.toFixed(2)}
-                    </span>
-                    <span className="text-red-500 font-semibold">
-                      ${product.salePrice.toFixed(2)}
-                    </span>
-                  </>
-                ) : (
-                  <span className="text-red-500 font-semibold">
-                    ${product.price.toFixed(2)}
-                  </span>
-                )}
-<<<<<<< HEAD
-                <span className="text-red-500 font-semibold text-lg">
-                  ${product.price.toFixed(2)}
-                </span>
-=======
->>>>>>> e63bf5fc7ca7a94bccbb6bc7f6c17de9accc30e5
-              </div>
-              <Button
-                size="icon"
-                className="rounded-full bg-teal-500 hover:bg-teal-600"
-              >
-                <ShoppingCart className="w-4 h-4" />
-                <span className="sr-only">Add to cart</span>
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
     </Container>
   );
 }
-
-
-import { Types } from "mongoose";
-
-// Main Product Interface
-export interface IProduct {
-  name: string;                       // Product name
-  description: string;                // Detailed product description
-  price: number;                      // Product price
-  stock: number;                      // Number of items in stock
-  images: IProductImage[];            // Array of product images
-  ratings: Types.ObjectId[];          // Customer ratings
-  createdAt: Date;                    // Timestamp for product creation
-  updatedAt: Date;                    // Timestamp for last update
-  isActive: boolean;                  // Flag to indicate if the product is active
-  isFeatured: boolean;                // Flag to indicate if the product is featured
-  isOnSale: boolean;                  // Flag to indicate if the product is on sale
-  salePrice?: number;                 // Sale price (if applicable)
-  saleStartDate?: Date;               // Sale start date (if applicable)
-  saleEndDate?: Date;                 // Sale end date (if applicable)
-  sku: string;                        // Product SKU (Stock Keeping Unit)
-  tax: number;                        // Tax percentage
-  shippingCost: number;                   // Shipping cost
-}
-
-
-// Product Image Interface
-export interface IProductImage {
-  url: string;                        // Image URL
-  altText: string;                    // Alt text for image
-  isPrimary: boolean;                 // Flag to indicate primary image
-}
-
-export interface IProductAttribute {
-  key: string;                       // Attribute name
-  value: string;                      // Attribute value
-}
-
