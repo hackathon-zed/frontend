@@ -40,7 +40,7 @@ const Header = () => {
         className="max-w-7xl mx-auto px-6 py-4 flex justify-between relative"
       >
         <Link
-          href="#home"
+          href="/"
           className="flex md:flex-1"
           onClick={() => setActiveLink("Home")}
         >
@@ -69,6 +69,12 @@ const Header = () => {
               {link.label} {link.target && <ExternalLink />}
             </Link>
           ))}
+          <Link
+            href="/tools"
+            className="text-lg flex gap-2 font-semibold cursor-pointer transition-colors duration-200 relative "
+          >
+            Tools
+          </Link>
           {/* Active Link Indicator */}
           <span
             className="absolute top-full h-0.5 bg-blue-500 transition-all duration-300"

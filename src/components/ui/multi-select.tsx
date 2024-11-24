@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { Command as CommandPrimitive } from "cmdk";
-import { X as RemoveIcon, Check, Badge as BadgeIcon } from "lucide-react";
+import { X as RemoveIcon, Check } from "lucide-react";
 import React, {
   type KeyboardEvent,
   createContext,
@@ -79,7 +79,7 @@ const MultiSelector = ({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [value],
+    [value]
   );
 
   const handleSelect = React.useCallback(
@@ -88,13 +88,13 @@ const MultiSelector = ({
       const target = e.currentTarget;
       const selection = target.value.substring(
         target.selectionStart ?? 0,
-        target.selectionEnd ?? 0,
+        target.selectionEnd ?? 0
       );
 
       setSelectedValue(selection);
       setIsValueSelected(selection === inputValue);
     },
-    [inputValue],
+    [inputValue]
   );
 
   const handleKeyDown = useCallback(
@@ -107,7 +107,7 @@ const MultiSelector = ({
       const moveNext = () => {
         const nextIndex = activeIndex + 1;
         setActiveIndex(
-          nextIndex > value.length - 1 ? (loop ? 0 : -1) : nextIndex,
+          nextIndex > value.length - 1 ? (loop ? 0 : -1) : nextIndex
         );
       };
 
@@ -181,7 +181,7 @@ const MultiSelector = ({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [value, inputValue, activeIndex, loop],
+    [value, inputValue, activeIndex, loop]
   );
 
   return (
@@ -203,7 +203,7 @@ const MultiSelector = ({
         onKeyDown={handleKeyDown}
         className={cn(
           "flex flex-col space-y-2 overflow-visible bg-transparent",
-          className,
+          className
         )}
         dir={dir}
         {...props}
@@ -233,7 +233,7 @@ const MultiSelectorTrigger = forwardRef<
         {
           "ring-1 focus-within:ring-ring": activeIndex === -1,
         },
-        className,
+        className
       )}
       {...props}
     >
@@ -242,7 +242,7 @@ const MultiSelectorTrigger = forwardRef<
           key={item}
           className={cn(
             "flex items-center gap-1 rounded-xl px-1",
-            activeIndex === index && "ring-2 ring-muted-foreground",
+            activeIndex === index && "ring-2 ring-muted-foreground"
           )}
           variant={"secondary"}
         >
@@ -269,7 +269,7 @@ MultiSelectorTrigger.displayName = "MultiSelectorTrigger";
 const MultiSelectorInput = forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
->(({ className, ...props }, _ref) => {
+>(({ className, ...props }) => {
   const {
     setOpen,
     inputValue,
@@ -294,7 +294,7 @@ const MultiSelectorInput = forwardRef<
       className={cn(
         "ml-2 flex-1 bg-transparent outline-none placeholder:text-muted-foreground",
         className,
-        activeIndex !== -1 && "caret-transparent",
+        activeIndex !== -1 && "caret-transparent"
       )}
     />
   );
@@ -325,7 +325,7 @@ const MultiSelectorList = forwardRef<
       ref={ref}
       className={cn(
         "scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted-foreground dark:scrollbar-thumb-muted scrollbar-thumb-rounded-lg absolute top-0 z-10 flex w-full flex-col gap-2 rounded-md border border-muted bg-background p-2 shadow-md transition-colors",
-        className,
+        className
       )}
     >
       {children}
@@ -364,7 +364,7 @@ const MultiSelectorItem = forwardRef<
         "flex cursor-pointer justify-between rounded-md px-2 py-1 transition-colors",
         className,
         isIncluded && "cursor-default opacity-50",
-        props.disabled && "cursor-not-allowed opacity-50",
+        props.disabled && "cursor-not-allowed opacity-50"
       )}
       onMouseDown={mousePreventDefault}
     >

@@ -6,6 +6,7 @@ import { Globe } from "lucide-react";
 import Container from "@/components/ui/container";
 import CustomButton from "@/components/ui/customButton";
 import LearnMore from "./LearnMore";
+import Link from "next/link";
 
 interface HeroProps {
   backgroundImage: string;
@@ -50,7 +51,7 @@ const Hero: FC<HeroProps> = ({ backgroundImage }) => {
           iconRight={<Globe />}
           className="animate-fade-in-up-2"
         >
-          Explore
+          <Link href="#about">Explore</Link>
         </CustomButton>
         <LearnMore label="Scroll for more" className="animate-fade-in-up-3" />
       </Container>
