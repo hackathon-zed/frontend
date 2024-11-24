@@ -39,18 +39,7 @@ export default function AiFeatureDashBoard() {
             icon: "🖼️",
             link: "/ai/imagerecognization",
         },
-        {
-            title: "Sentiment Analysis",
-            description: "Understand emotions in text with sentiment analysis.",
-            icon: "📊",
-            link: "/sentiment-analysis",
-        },
-        {
-            title: "Text Summarization",
-            description: "Condense large texts into concise summaries.",
-            icon: "✂️",
-            link: "/text-summarization",
-        },
+
     ];
 
     return (
