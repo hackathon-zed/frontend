@@ -55,7 +55,6 @@ const ChatBot = () => {
         setMessages((prev) => [...prev, assistantMessage]);
       } catch (error) {
         console.error("Error:", error);
-        // Optionally, add an error message to the chat
         setMessages((prev) => [
           ...prev,
           {
@@ -76,28 +75,27 @@ const ChatBot = () => {
   }, [messages, isLoading]);
 
   return (
-    <Card className="w-full max-w-2xl mx-auto h-[600px] flex flex-col">
+    <Card className="w-full max-w-2xl mx-auto h-[600px] flex flex-col bg-gradient-to-b from-white to-gray-100 shadow-lg border border-gray-200">
+
       <ScrollArea
-        className="flex-grow p-4 space-y-2 relative"
+        className="flex-grow p-4 space-y-2 relative bg-gray-50"
         ref={scrollAreaRef}
       >
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
-            <MessageCircle className="w-12 h-12 mb-4" />
-            <p>Write a message to start a chat</p>
+            <MessageCircle className="w-12 h-12 mb-4 text-gray-400" />
+            <p className="text-gray-500">Write a message to start a chat</p>
           </div>
         ) : (
           messages.map((message, index) => (
             <div
               key={index}
-              className={`flex gap-4 my-4 ${
-                message.role === "user" ? "justify-end" : "justify-start"
-              }`}
+              className={`flex gap-4 my-4 ${message.role === "user" ? "justify-end" : "justify-start"
+                }`}
             >
               <div
-                className={`flex items-start space-x-2 gap-2 ${
-                  message.role === "user" ? "flex-row-reverse" : ""
-                }`}
+                className={`flex items-start space-x-2 gap-2 ${message.role === "user" ? "flex-row-reverse" : ""
+                  }`}
               >
                 <Avatar>
                   <AvatarFallback>
@@ -112,11 +110,10 @@ const ChatBot = () => {
                   />
                 </Avatar>
                 <div
-                  className={`p-2 rounded-lg ${
-                    message.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted"
-                  }`}
+                  className={`p-3 rounded-2xl shadow-sm ${message.role === "user"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-100 text-gray-800"
+                    }`}
                 >
                   {message.content}
                 </div>
@@ -131,14 +128,14 @@ const ChatBot = () => {
                 <AvatarFallback>AI</AvatarFallback>
                 <AvatarImage src="/ai-avatar.png" />
               </Avatar>
-              <div className="p-2 rounded-lg bg-muted">
+              <div className="p-3 rounded-2xl bg-gray-100 shadow-sm">
                 <span className="animate-pulse">AI is typing...</span>
               </div>
             </div>
           </div>
         )}
       </ScrollArea>
-      <form onSubmit={handleSubmit} className="p-4 border-t">
+      <form onSubmit={handleSubmit} className="p-4 border-t bg-white">
         <div className="flex space-x-2">
           <Input
             value={input}
@@ -146,8 +143,8 @@ const ChatBot = () => {
             placeholder="Type your message here..."
             className="flex-grow"
           />
-          <Button type="submit" disabled={isLoading}>
-            Send
+          <Button type="submit" disabled={isLoading} className="bg-blue-500">
+            {isLoading ? "Sending..." : "Send"}
           </Button>
         </div>
       </form>
