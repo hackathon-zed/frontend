@@ -32,6 +32,15 @@ const Header = () => {
     return () => window.removeEventListener("resize", updateIndicator);
   }, [activeLink]);
 
+
+  const handleCustomerSignin = async () => {
+    try {
+      window.location.href = "http://localhost:3000/api/v1/auth/google";
+    } catch (error) {
+      console.error("Failed to sign in as customer:", error);
+    }
+  }
+
   return (
     <nav className="bg-background sticky top-0 z-50 border-b">
       {/* Desktop Navigation */}
@@ -60,10 +69,9 @@ const Header = () => {
                 return setIsMenuOpen(false);
               }}
               className={`text-lg flex gap-2 font-semibold cursor-pointer transition-colors duration-200 relative 
-                ${
-                  activeLink === link.label
-                    ? "text-blue-500"
-                    : "text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400"
+                ${activeLink === link.label
+                  ? "text-blue-500"
+                  : "text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400"
                 }`}
             >
               {link.label} {link.target && <ExternalLink />}
@@ -105,11 +113,10 @@ const Header = () => {
                     return setIsMenuOpen(false);
                   }}
                   className={`text-lg flex gap-2 font-semibold cursor-pointer transition-colors duration-200 relative 
-                ${
-                  activeLink === link.label
-                    ? "text-blue-500"
-                    : "text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400"
-                }`}
+                ${activeLink === link.label
+                      ? "text-blue-500"
+                      : "text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400"
+                    }`}
                 >
                   {link.label} {link.target && <ExternalLink />}
                 </a>

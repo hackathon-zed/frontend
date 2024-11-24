@@ -6,7 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import AudioRecorder from './recording.translator';
-export default function Page() {
+
+
+
+
+export default function SpeechToText() {
 
   const [file, setSelectedFile] = useState(null as File | null);
   const [isLoading, setIsLoading] = useState(false);

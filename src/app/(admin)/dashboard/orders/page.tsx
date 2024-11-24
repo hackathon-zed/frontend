@@ -33,7 +33,7 @@ export default function OrdersPage() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <PlaceholderContent />
+      
     </ContentLayout>
   );
 }
